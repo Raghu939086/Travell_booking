@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'gajamraghu$ticket_booking',
         'USER': 'gajamraghu',              
-        'PASSWORD': 'raghu503', 
+        'PASSWORD': 'raghu123', 
         'HOST': 'gajamraghu.mysql.pythonanywhere-services.com',
         'PORT': '3306',
     }
