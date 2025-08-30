@@ -9,15 +9,14 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 import sys
 import os
 
-# Add your project directory to the Python path
+# Add your project directory
 path = '/home/gajamraghu/Travell_booking'
 if path not in sys.path:
     sys.path.append(path)
 
-# Set the Django settings module
+# Set Django settings
 os.environ['DJANGO_SETTINGS_MODULE'] = 'Travell_booking.settings'
 
-# Activate the virtual environment
 activate_this = '/home/gajamraghu/.virtualenvs/travelenv/bin/activate_this.py'
 with open(activate_this) as file_:
     exec(file_.read(), dict(_file_=activate_this))
