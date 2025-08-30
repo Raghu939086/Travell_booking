@@ -77,14 +77,13 @@ WSGI_APPLICATION = 'travel_booking.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ticket_booking',
-        'USER':'root',
-        'PASSWORD': 'raghu503',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'NAME': 'gajamraghu$traveldb',
+        'USER': 'gajamraghu',              
+        'PASSWORD': 'raghu503', 
+        'HOST': 'gajamraghu.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
