@@ -1,0 +1,174 @@
+{% block content %}
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  body {
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #4d090956;
+  }
+  .login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 32px 24px;
+    background: #ffffffd6;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    font-family: Arial, sans-serif;
+  }
+  .login-container h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #0c0c0c;
+  }
+  .login-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .login-container label {
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .login-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  .login-container button {
+    padding: 10px 0;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .login-container button:hover {
+    background: #1e7e34;
+  }
+  #messages {
+    margin-bottom: 12px;
+  }
+  .login-container p {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 15px;
+  }
+  .login-container a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  .login-container a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="login-container">
+  <h2>Login</h2>
+
+  
+  <form id="loginForm" method="POST" action="/login/">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.GET.next|default:'' }}">
+
+    <div id="messages">
+     
+    </div>
+
+    <div>
+      <label for="{{ form.username.id_for_label }}">Username</label>
+      {{ form.username }}
+    </div>
+
+    <div>
+      <label for="{{ form.password.id_for_label }}">Password</label>
+      {{ form.password }}
+    </div>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+</div>
+
+<script>
+  // Your existing JS code for AJAX login remains unchanged
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const url = form.action;
+    const formData = new FormData(form);
+
+    fetch(url, {
+      method: 'POST',
+      body: formData,
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => {
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.indexOf('application/json') !== -1) {
+        return response.json();
+      } else {
+        return response.text().then(text => { throw new Error(text); });
+      }
+    })
+    .then(data => {
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML = '';
+      if (data.success) {
+        window.location.href = data.redirect_url;
+      } else {
+        if (data.errors) {
+          let errors = JSON.parse(data.errors);
+          for (let field in errors) {
+            errors[field].forEach(errorObj => {
+              const p = document.createElement('p');
+              p.classList.add('alert', 'alert-danger');
+              p.textContent = errorObj.message;
+              messagesDiv.appendChild(p);
+            });
+          }
+        } else {
+          messagesDiv.textContent = "Login failed. Please try again.";
+        }
+      }
+    })
+    .catch(error => {
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML = `<div class="alert alert-danger">Login failed (non-JSON response): ${error.message}</div>`;
+      console.error('Login failed response:', error.message);
+    });
+  });
+</script>
+{% endblock %}

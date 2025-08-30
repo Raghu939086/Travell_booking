@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Update Profile</h2>
+
+<!-- Profile info display -->
+<div id="profileDisplay">
+  <p><strong>Username:</strong> {{ request.user.username }}</p>
+  <p><strong>Email:</strong> {{ request.user.email }}</p>
+  <!-- Add more profile fields here if desired -->
+
+  <button id="editBtn" class="btn btn-primary">Edit Profile</button>
+</div>
+
+<!-- Profile edit form, hidden initially -->
+<div id="profileForm" style="display:none;">
+  <form method="POST">
+    {% csrf_token %}
+
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        {% for field, errors in form.errors.items %}
+          {% for error in errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-success">Update</button>
+    <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('editBtn').addEventListener('click', function() {
+    document.getElementById('profileDisplay').style.display = 'none';
+    document.getElementById('profileForm').style.display = 'block';
+  });
+
+  document.getElementById('cancelBtn').addEventListener('click', function() {
+    document.getElementById('profileForm').style.display = 'none';
+    document.getElementById('profileDisplay').style.display = 'block';
+  });
+</script>
+{% endblock %}

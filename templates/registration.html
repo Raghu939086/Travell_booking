@@ -1,0 +1,112 @@
+{% block content %}
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  body {
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #819ac3;
+  }
+  .register-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 32px 24px;
+    background: #ffffff4b;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(212, 193, 193, 0.48);
+    font-family: Arial, sans-serif;
+  }
+  .register-container h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+  }
+  .register-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .register-container input,
+  .register-container select,
+  .register-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  .register-container button {
+    padding: 10px 0;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .register-container button:hover {
+    background: #0056b3;
+  }
+  .register-container .error-list {
+    background: #ffe6e6;
+    color: #b30000;
+    border-radius: 5px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  .register-container .login-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 15px;
+    color: #333;
+    text-decoration: none;
+  }
+  .register-container .login-link:hover {
+    color: #007bff;
+    text-decoration: underline;
+  }
+
+  /* Strong hide of all default password help text */
+  ul.helptext, 
+  .helptext, 
+  div.helptext, 
+  p.helptext,
+  .password-validation,
+  div.password-help,
+  input[type="password"] + small,
+  input[type="password"] ~ div,
+  input[type="password"] ~ p {
+    display: none !important;
+  }
+</style>
+<div class="register-container">
+  <h2>Register</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {% if form.errors %}
+      <div class="error-list">
+        {% for field, errors in form.errors.items %}
+          {% for error in errors %}
+            <div>{{ error }}</div>
+          {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+          <div>{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+  </form>
+  <a href="{% url 'login' %}" class="login-link">Already have an account? Login</a>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Book Travel: {{ travel.type }} {{ travel.source }} → {{ travel.destination }}</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Book Now</button>
+</form>
+
+{% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My Bookings</h2>
+
+{% if bookings %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Travel Type</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Seats</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.travel_option.type }}</td>
+      <td>{{ booking.travel_option.source }}</td>
+      <td>{{ booking.travel_option.destination }}</td>
+      <td>{{ booking.num_seats }}</td>
+      <td>
+        {% if booking.status == "Confirmed" %}
+          <span class="badge bg-success">{{ booking.status }}</span>
+        {% elif booking.status == "Cancelled" %}
+          <span class="badge bg-danger">{{ booking.status }}</span>
+        {% else %}
+          <span class="badge bg-secondary">{{ booking.status }}</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if booking.status == "Confirmed" %}
+          <a href="{% url 'cancel_booking' booking.booking_id %}" class="btn btn-danger btn-sm" 
+             onclick="return confirm('Are you sure you want to cancel this booking?');">Cancel</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>You have no bookings.</p>
+{% endif %}
+{% endblock %}
