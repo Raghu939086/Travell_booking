@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o+qfdn5$(v=o9j1om0ufd8nhasom=p#ngp+(^)f5n25d1p5ul*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -77,13 +77,14 @@ WSGI_APPLICATION = 'travel_booking.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gajamraghu$ticket_booking',
-        'USER': 'gajamraghu',              
-        'PASSWORD': 'raghu123', 
-        'HOST': 'gajamraghu.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
+        'NAME': 'ticket_booking',
+        'USER':'root',
+        'PASSWORD': 'raghu503',
+        'HOST':'localhost',
+        'PORT':'3306',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
